@@ -38,6 +38,7 @@ http://lodev09.github.io/bootstrap-dropselect/#api
 All bugs, feature requests, pull requests, feedback, etc., are welcome!
 
 Copyright 2014, Jovanni Lo / [@lodev09](http://twitter.com/lodev09) / [www.lodev09.com](http://www.lodev09.com "www.lodev09.com") / [lodev09@gmail.com](mailto:lodev09@gmail.com)
+
 [Bootstrap Components](http://getbootstrap.com/components/)
 [Github's Select Menu](https://github.com/styleguide/css/13.0)
 
