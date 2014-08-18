@@ -1,0 +1,73 @@
+/**
+ * Bootstrap-Markdown.less
+ *
+ * @author Jovanni Lo @lodev09
+ * @copyright 2014 Jovanni Lo
+ */
+
+@dropselect-icon-width: 			20px;
+@dropselect-item-padding:			8px 0 8px 8px;
+@dropselect-header-padding: 		8px 10px;
+
+@import "variables.less"; // Point this into your bootstrap variables
+@import "mixins.less"; // Point this into your bootstrap variables
+
+.dropselect {
+	width: 300px;
+	padding-top: 0;
+
+	> .dropdown-header {
+		background: @well-bg;
+		padding: @dropselect-header-padding;
+		font-size: inherit;
+		color: @gray-dark;
+		text-shadow: 0 1px 0 #fff;
+		border-bottom: 1px solid rgba(200,200,200,0.4)
+	}
+
+	> li {
+		border-bottom: 1px solid @gray-lighter;
+		display: table;
+		table-layout: fixed;
+		overflow: hidden;
+		width: 100%;
+	}
+
+	> li:last-child {
+		border-bottom: 0;
+	}
+
+	> li > a {
+		padding: @dropselect-item-padding;
+	}
+
+	> .divider {
+		height: 5px;
+		margin: 0;
+		background-color: @navbar-default-bg;
+	}
+
+	.dropselect-item-icon {
+		width: @dropselect-icon-width;
+	}
+
+	> .dropselect-item .dropselect-item-icon {
+		visibility: hidden;
+	}
+
+	> .dropselect-filter {
+		background-color: @navbar-default-bg;
+		padding: 10px;
+		border-bottom: 1px solid @table-border-color;
+	}
+
+	> .dropselect-filter .dropselect-filter-input {
+		display: block;
+		width: 100%;
+		max-width: 100%;
+	}
+
+	.dropselect-item.dropselect-selected .dropselect-item-icon {
+		visibility: visible;
+	}
+}
