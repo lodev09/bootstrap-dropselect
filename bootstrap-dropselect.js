@@ -36,9 +36,11 @@
 
 		}, that = this, $items = that.children('li:has(a)');
 
-		if (typeof options.filter == 'boolean') options.filter = {show: options.filter}
-		if (typeof options.clear == 'boolean') options.clear = {show: options.clear}
-
+		if (typeof options != 'undefined') {
+			if (typeof options.filter == 'boolean') options.filter = {show: options.filter}
+			if (typeof options.clear == 'boolean') options.clear = {show: options.clear}
+		}
+		
 		options = $.extend(true, defaults, options);
 
 		// properties
