@@ -23,7 +23,7 @@
 	<link rel="stylesheet" href="css/highlight-github.css">
 
 	<!-- plugin css -->
-	<link rel="stylesheet" href="bootstrap-dropselect.css">
+	<link rel="stylesheet" href="css/bootstrap-dropselect.css">
 
 	<!-- Just for debugging purposes. Don't actually copy these 2 lines! -->
     <!--[if lt IE 9]><script src="../../assets/js/ie8-responsive-file-warning.js"></script><![endif]-->
@@ -57,11 +57,21 @@
           <ul class="dropdown-menu" id="dropselect" role="menu">
           	<li class="dropdown-header">Nav header</li>
             <li><a href="#">Select Me!</a></li>
-            <li><a href="http://github.com/lodev09/bootstrap-dropselect">Default Action Link</a></li>
+            <li>
+              <a href="#">
+                <strong>Heading</strong><br />
+                <small class="text-muted">Content description here...</small>
+              </a>
+            </li>
+            <li>
+              <a href="http://github.com/lodev09/bootstrap-dropselect">
+                <i class="glyphicon glyphicon-arrow-right"></i> Goto Project!
+              </a>
+            </li>
             <li><a href="#">Something else here</a></li>
             <li class="divider"></li>
             <li><a href="#">Separated link</a></li>
-            <li><a href="#">One more separated link</a></li>
+
           </ul>
         </div>
         <div class="collapse navbar-collapse">
@@ -120,18 +130,23 @@ Upon initilizing `dropselect`, you can pass these available options
 | multiselect | boolean  | false                                                         | set to `true` if you want enable multi select menu.                        |
 | clear       | mixed    | `{ show: true, label: 'Clear selected' }`                     | option to enable the clear item. Pass a boolean `true` for minimal use.    |
 | filter      | mixed    | `{ show: true, placeholder: 'Search', casesensitive: false }` | option to enable the filter textbox. Pass a boolean `true` for minimal use |
-| onclear     | callback | _empty callback_                                              | callback function when `clear` event was triggered                         |
-| onselect    | callback | _empty callback_                                              | callback function when `select` event was triggered                        |
-| onunselect  | callback | _empty callback_                                              | callback function when `unselect` event was triggered                      | 
-
+| onclear     | callback | _empty_                                                       | callback function when `clear` event was triggered                         |
+| onselect    | callback | _empty_                                                       | callback function when `select` event was triggered                        |
+| onunselect  | callback | _empty_                                                       | callback function when `unselect` event was triggered                      |
+| ontoggle    | callback | _empty_                                                       | callback function when `toggle` event was triggered                        |
+| onchange    | callback | _empty_                                                       | callback function when `change` event was triggered                        |
 
 ### Events
 
-| Event    | Params Passed | Description                                |
-| ---      | ---           | ---                                        |
-| select   | `object` item | triggered after you selected an item       |
-| unselect | `object` item | triggered after you unselected an item     |
-| clear    | _none_        | triggered after you cleared selected items |
+| Event    | Callback Params | Description                                |
+| ---      | ---             | ---                                        |
+| select   | `object` item   | triggered after you selected an item       |
+| unselect | `object` item   | triggered after you unselected an item     |
+| clear    | _none_          | triggered after you cleared selected items |
+| toggle   | `object` item   | triggered when item is toggled             |
+| change   | _none_          | triggered when item state was changed      |
+
+
 
 ### Properties
 
@@ -189,7 +204,6 @@ $(function() {
         ...
       </ul>
     ```
-
       </div>
     </div>
 
@@ -206,7 +220,7 @@ $(function() {
 	<script src="js/highlight.pack.js"></script>
 
 	<!-- plugin script -->
-	<script src="bootstrap-dropselect.js"></script>
+	<script src="js/bootstrap-dropselect.js"></script>
     
     <script>
 
@@ -249,7 +263,7 @@ $(function() {
     		$('.markdown').marked();
 
     		$('#dropselect').dropselect({
-    			onclear: function() {
+    			onclear: function(e) {
     				$('#dropselect-label').html('Click Me!');
     			},
           filter: true
