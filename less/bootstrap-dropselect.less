@@ -5,8 +5,8 @@
  * @copyright 2014 Jovanni Lo
  */
 
-@dropselect-icon-width: 			20px;
-@dropselect-item-padding:			8px 0 8px 8px;
+@dropselect-icon-width: 			23px;
+@dropselect-item-padding:			8px;
 @dropselect-header-padding: 		8px 10px;
 
 @import "variables.less"; // Point this into your bootstrap variables
@@ -14,7 +14,37 @@
 
 .dropselect {
 	width: 300px;
-	padding-top: 0;
+	padding: 0;
+
+	.dropselect-loading-overlay .dropselect-loading-icon {
+	    position:absolute;
+	    left:50%;
+	    top:50%;
+	    margin:-16px 0 0 -16px;
+	    width:32px;
+	    font-size: 32px;
+	    line-height:1;
+	    display:inline-block;
+	    text-decoration:none;
+	    -webkit-font-smoothing:antialiased;
+	    text-indent:0
+	}
+
+	.dropselect-loading-overlay {
+	    display:none;
+	    text-indent:100%;
+	    height:100%;
+	    width:100%;
+	    position:absolute;
+	    top:0;
+	    z-index:5;
+	    border-radius:5px;
+	    border:1px solid transparent;
+	    background-color:rgba(255,255,255,0.8);
+	    animation:pulse 2s infinite linear;
+	    -webkit-animation:pulse 2s infinite linear;
+	    -moz-animation:pulse 2s infinite linear
+	}
 
 	> .dropdown-header {
 		background: @well-bg;
@@ -27,10 +57,6 @@
 
 	> li {
 		border-bottom: 1px solid @gray-lighter;
-		display: table;
-		table-layout: fixed;
-		overflow: hidden;
-		width: 100%;
 	}
 
 	> li:last-child {
@@ -39,6 +65,14 @@
 
 	> li > a {
 		padding: @dropselect-item-padding;
+		display: table;
+		table-layout: fixed;
+		width: 100%;
+		overflow: hidden;
+	}
+
+	> li > a:hover * {
+		color: inherit !important;
 	}
 
 	> .divider {
@@ -49,6 +83,7 @@
 
 	.dropselect-item-icon {
 		width: @dropselect-icon-width;
+		display: table-cell;
 	}
 
 	> .dropselect-item .dropselect-item-icon {
@@ -70,4 +105,20 @@
 	.dropselect-item.dropselect-selected .dropselect-item-icon {
 		visibility: visible;
 	}
+}
+
+.dropselect.dropselect-loading .dropselect-loading-overlay {
+    display:block
+}
+
+@-webkit-keyframes pulse {
+    0% {color:rgba(170,170,170,0.1)}
+    10% {color:#aaaaaa}
+    100% {color:rgba(170,170,170,0.1)}
+}
+
+@keyframes pulse {
+    0% {color:rgba(170,170,170,0.1)}
+    10% {color:#aaaaaa}
+    100% {color:rgba(170,170,170,0.1)}
 }
