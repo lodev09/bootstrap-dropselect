@@ -41,9 +41,9 @@
 	    border-radius:5px;
 	    border:1px solid transparent;
 	    background-color:rgba(255,255,255,0.8);
-	    animation:pulse 2s infinite linear;
-	    -webkit-animation:pulse 2s infinite linear;
-	    -moz-animation:pulse 2s infinite linear
+	    animation:dropselect-pulse 2s infinite linear;
+	    -webkit-animation:dropselect-pulse 2s infinite linear;
+	    -moz-animation:dropselect-pulse 2s infinite linear
 	}
 
 	> .dropdown-header {
@@ -111,13 +111,13 @@
     display:block
 }
 
-@-webkit-keyframes pulse {
+@-webkit-keyframes dropselect-pulse {
     0% {color:rgba(170,170,170,0.1)}
     10% {color:#aaaaaa}
     100% {color:rgba(170,170,170,0.1)}
 }
 
-@keyframes pulse {
+@keyframes dropselect-pulse {
     0% {color:rgba(170,170,170,0.1)}
     10% {color:#aaaaaa}
     100% {color:rgba(170,170,170,0.1)}
