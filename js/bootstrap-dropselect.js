@@ -67,7 +67,7 @@
 			});
 
 			this.selectedValue = that.selectedValues[0];
-			this.selectedItems = that.selectedItems[0];
+			this.selectedItem = that.selectedItems[0];
 
 			if (typeof triggerEvent == 'undefined' || triggerEvent === true) {
 				this.$element.trigger($.extend({type: 'change'}, this));
@@ -222,10 +222,11 @@
 				var $itemEl = item.$element;
 				if (options.multiselect) {
 					$itemEl.removeClass('dropselect-selected');
-					this._change();
 				} else {
-					this.clear(false);
+					this.$_items.removeClass('dropselect-selected');
 				}
+
+				this._change();
 				$el.trigger($.extend({type: 'unselect'}, this), item);
 			}
 
@@ -240,13 +241,12 @@
 			if (typeof item == 'object') {
 				var $itemEl = item.$element;
 
-				if (options.multiselect) {
-					this._change(triggerEvent);
-				} else {
-					this.clear(false);
+				if (!options.multiselect) {
+					this.$_items.removeClass('dropselect-selected');
 				}
 
 				$itemEl.addClass('dropselect-selected');
+				this._change(triggerEvent);
 				
 				if (typeof triggerEvent == 'undefined' || triggerEvent === true) {
 					$el.trigger($.extend({type: 'select'}, this), item);
