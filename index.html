@@ -158,11 +158,14 @@ Upon initilizing `dropselect`, you can pass these available options
 
 ### Methods
 
-| Method        | Params                                 | Description                           |
-| ---           | ---                                    | ---                                   |
-| toggle(index) | index - _zero based index of the item_ | toggles the selected state of an item |
-| clear         | _none_                                 | clear all selected items              |
-
+| Method          | Params                                 | Description                                         |
+| ---             | ---                                    | ---                                                 |
+| toggle(index)   | index - _zero based index of the item_ | toggles the selected state of an item               |
+| clear           | _none_                                 | clear all selected items                            |
+| select(index)   | index - _zero based index of the item_ | manually selects an item given by an index number   |
+| unselect(index) | index - _zero based index of the item_ | manually unselects an item given by an index number |
+| showLoading     | _none_                                 | shows the loading indicator                         |
+| hideLoading     | _none_                                 | hides the loading indicator                         |
 
 #### Sample Call
 ```javascript
@@ -182,11 +185,12 @@ $(function() {
   });
 
   $('#clear-button').on('click', function() {
-    mydropselect.clear();
+    mydropselect.dropselect('clear');
   })
 
   $('#toggle-item-3').on('click', function() {
-    mydropselect.toggle(3);
+    mydropselect.dropselect('showLoading');
+    mydropselect.dropselect('toggle', 3);
   })
 })
 ```
@@ -262,7 +266,7 @@ $(function() {
 
     		$('.markdown').marked();
 
-    		$('#dropselect').dropselect({
+    		$test = $('#dropselect').dropselect({
     			onclear: function(e) {
     				$('#dropselect-label').html('Click Me!');
     			},
