@@ -41,12 +41,12 @@
 	Dropselect.prototype = {
 		_setListener: function() {
 			this.$element
-				.on('select', $.proxy(this.options.onselect, this))
-				.on('unselect', $.proxy(this.options.onunselect, this))
-				.on('toggle', $.proxy(this.options.ontoggle, this))
-				.on('change', $.proxy(this.options.onchange, this))
-				.on('load', $.proxy(this.options.onload, this))
-				.on('clear', $.proxy(this.options.onclear, this));
+				.on('ds.select', $.proxy(this.options.onselect, this))
+				.on('ds.unselect', $.proxy(this.options.onunselect, this))
+				.on('ds.toggle', $.proxy(this.options.ontoggle, this))
+				.on('ds.change', $.proxy(this.options.onchange, this))
+				.on('ds.load', $.proxy(this.options.onload, this))
+				.on('ds.clear', $.proxy(this.options.onclear, this));
 
 			return this;
 		},
@@ -70,7 +70,7 @@
 			this.selectedItem = that.selectedItems[0];
 
 			if (typeof triggerEvent == 'undefined' || triggerEvent === true) {
-				this.$element.trigger($.extend({type: 'change'}, this));
+				this.$element.trigger($.extend({type: 'ds.change'}, this));
 			}
 
 			return this;
@@ -104,19 +104,18 @@
 			$el.prepend('<li class="dropselect-loading-overlay"><i class="glyphicon glyphicon-time dropselect-loading-icon"></i></li>');
 
 			this.$_items.each(function(index, el) {
-				var $itemEl = $(el), 
+				var $itemEl = $(this),
 					text = $.trim($itemEl.text()),
 					value = typeof $itemEl.data('value') != 'undefined' ? $itemEl.data('value') : text;
 
-				$itemEl.addClass('dropselect-item')
-					.children('a:first')
-						.prepend(' <i class="glyphicon glyphicon-ok dropselect-item-icon"></i> ')
-						// bind the click event of the item (anchor)
-						.on('click', function(e) {
-							if ($(this).attr('href') == '#') e.preventDefault();
-							if (options.multiselect) e.stopPropagation();
-							that.toggle(index);
-						});
+				$itemEl.addClass('dropselect-item');
+				$itemEl.find('a:first').prepend(' <i class="glyphicon glyphicon-ok dropselect-item-icon"></i> ')
+					// bind the click event of the item (anchor)
+					.on('click', function(e) {
+						if ($(this).attr('href') == '#') e.preventDefault();
+						if (options.multiselect) e.stopPropagation();
+						that.toggle(index);
+					});
 
 				// push new item to items list
 				that.items.push({
@@ -144,18 +143,17 @@
 				});
 				$searchText.on('keyup', function(e) {
 					var q = $(this).val();
-					if (q === "") {
-						that.$_items.removeClass('hidden');
-					} else {
-						that.$_items.addClass('hidden').filter(function () {
-							var value = $(this).text();
+					that.$_items.removeClass('hidden');
+					if (q !== "") {
+						that.$_items.filter(function () {
+							var value = $(this).find('a:first').text();
 							if (!options.filter.casesensitive) {
 								value = value.toLowerCase();
 								q = q.toLowerCase();
 							}
-							
-				            return value.indexOf(q) != -1;
-				        }).removeClass('hidden');
+
+				            return value.indexOf(q) == -1;
+				        }).addClass('hidden');
 				    }
 				});
 
@@ -179,7 +177,7 @@
 				$el.find('li:has(a):first').before($clear);
 			}
 
-			this.$element.trigger($.extend({type: 'load'}, this));
+			this.$element.trigger($.extend({type: 'ds.load'}, this));
 
 			return this;
 		},
@@ -188,7 +186,7 @@
 			this.$_items.removeClass('dropselect-selected');
 			this._change(triggerEvent);
 			if (typeof triggerEvent == 'undefined' || triggerEvent === true) {
-				this.$element.trigger($.extend({type: 'clear'}, this));
+				this.$element.trigger($.extend({type: 'ds.clear'}, this));
 			}
 
 			return this;
@@ -207,9 +205,9 @@
 					this.select(index);
 				}
 
-				$el.trigger($.extend({type: 'toggle'}, this), item);
+				$el.trigger($.extend({type: 'ds.toggle'}, this), item);
 			}
-		
+
 			return this;
 		},
 
@@ -227,7 +225,7 @@
 				}
 
 				this._change();
-				$el.trigger($.extend({type: 'unselect'}, this), item);
+				$el.trigger($.extend({type: 'ds.unselect'}, this), item);
 			}
 
 			return this;
@@ -247,9 +245,9 @@
 
 				$itemEl.addClass('dropselect-selected');
 				this._change(triggerEvent);
-				
+
 				if (typeof triggerEvent == 'undefined' || triggerEvent === true) {
-					$el.trigger($.extend({type: 'select'}, this), item);
+					$el.trigger($.extend({type: 'ds.select'}, this), item);
 				}
 			}
 

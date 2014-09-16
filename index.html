@@ -267,13 +267,15 @@ $(function() {
     		$('.markdown').marked();
 
     		$test = $('#dropselect').dropselect({
+          multiselect: true,
     			onclear: function(e) {
     				$('#dropselect-label').html('Click Me!');
     			},
+          onselect: function(e, item) {
+            $('#dropselect-label').html(item.value);
+          },
           filter: true
-    		}).on('select', function(e, item) {
-          $('#dropselect-label').html(item.value);
-        });
+    		});
 
     	})
     </script>
