@@ -9,9 +9,6 @@
 @dropselect-item-padding:			8px;
 @dropselect-header-padding: 		8px 10px;
 
-@import "variables.less"; // Point this into your bootstrap variables
-@import "mixins.less"; // Point this into your bootstrap variables
-
 .dropselect {
 	width: 300px;
 	padding: 0;
@@ -41,9 +38,9 @@
 	    border-radius:5px;
 	    border:1px solid transparent;
 	    background-color:rgba(255,255,255,0.8);
-	    animation:pulse 2s infinite linear;
-	    -webkit-animation:pulse 2s infinite linear;
-	    -moz-animation:pulse 2s infinite linear
+	    animation:dropselect-pulse 2s infinite linear;
+	    -webkit-animation:dropselect-pulse 2s infinite linear;
+	    -moz-animation:dropselect-pulse 2s infinite linear
 	}
 
 	> .dropdown-header {
@@ -57,22 +54,18 @@
 
 	> li {
 		border-bottom: 1px solid @gray-lighter;
-	}
 
-	> li:last-child {
-		border-bottom: 0;
-	}
+		&:last-child { border-bottom: 0; }
 
-	> li > a {
-		padding: @dropselect-item-padding;
-		display: table;
-		table-layout: fixed;
-		width: 100%;
-		overflow: hidden;
-	}
+		> a {
+			padding: @dropselect-item-padding;
+			display: table;
+			table-layout: fixed;
+			width: 100%;
+			overflow: hidden;
 
-	> li > a:hover * {
-		color: inherit !important;
+			&:hover * { color: inherit !important; }
+		}
 	}
 
 	> .divider {
@@ -86,9 +79,7 @@
 		display: table-cell;
 	}
 
-	> .dropselect-item .dropselect-item-icon {
-		visibility: hidden;
-	}
+	> .dropselect-item .dropselect-item-icon { visibility: hidden; }
 
 	> .dropselect-filter {
 		background-color: @navbar-default-bg;
@@ -102,22 +93,18 @@
 		max-width: 100%;
 	}
 
-	.dropselect-item.dropselect-selected .dropselect-item-icon {
-		visibility: visible;
-	}
+	.dropselect-item.dropselect-selected .dropselect-item-icon { visibility: visible; }
 }
 
-.dropselect.dropselect-loading .dropselect-loading-overlay {
-    display:block
-}
+.dropselect.dropselect-loading .dropselect-loading-overlay { display:block }
 
-@-webkit-keyframes pulse {
+@-webkit-keyframes dropselect-pulse {
     0% {color:rgba(170,170,170,0.1)}
     10% {color:#aaaaaa}
     100% {color:rgba(170,170,170,0.1)}
 }
 
-@keyframes pulse {
+@keyframes dropselect-pulse {
     0% {color:rgba(170,170,170,0.1)}
     10% {color:#aaaaaa}
     100% {color:rgba(170,170,170,0.1)}
