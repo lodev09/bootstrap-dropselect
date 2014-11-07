@@ -113,7 +113,7 @@
 					// bind the click event of the item (anchor)
 					.on('click', function(e) {
 						if ($(this).attr('href') == '#') e.preventDefault();
-						if (options.multiselect) e.stopPropagation();
+						if (!options.autohide) e.stopPropagation();
 						that.toggle(index);
 					});
 
@@ -171,6 +171,7 @@
 
 				$clear.first('.dropselect-clear').on('click', function(e) {
 					e.preventDefault();
+					if (!options.autohide) e.stopPropagation();
 					that.clear();
 				});
 
@@ -179,6 +180,12 @@
 
 			this.$element.trigger($.extend({type: 'ds.load'}, this));
 
+			return this;
+		},
+
+		hide: function() {
+			this.hideLoading();
+			this.$element.dropdown('toggle');
 			return this;
 		},
 
@@ -200,6 +207,7 @@
 			if (typeof item == 'object') {
 				var $itemEl = item.$element;
 				if ($itemEl.hasClass('dropselect-selected')) {
+					if (!options.toggle) return this;
 					this.unselect(index);
 				} else {
 					this.select(index);
@@ -292,6 +300,8 @@
 		onload: function(e) {},
 
 		multiselect: false,
+		toggle: true,
+		autohide: false,
 		clear: {
 			show: true,
 			text: 'Clear selected'
