@@ -113,7 +113,7 @@
 					// bind the click event of the item (anchor)
 					.on('click', function(e) {
 						if ($(this).attr('href') == '#') e.preventDefault();
-						if (!options.multiselect && !options.autohide) e.stopPropagation();
+						if (!options.autohide) e.stopPropagation();
 						that.toggle(index);
 					});
 
@@ -171,6 +171,7 @@
 
 				$clear.first('.dropselect-clear').on('click', function(e) {
 					e.preventDefault();
+					if (!options.autohide) e.stopPropagation();
 					that.clear();
 				});
 
