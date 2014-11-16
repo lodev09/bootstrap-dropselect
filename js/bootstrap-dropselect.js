@@ -94,8 +94,8 @@
 			this._setListener();
 
 			if (typeof options != 'undefined') {
-				if (typeof options.filter == 'boolean') options.filter = $.extend({show: options.filter}, $.fn.dropselect.defaults.filter);
-				if (typeof options.clear == 'boolean') options.clear = $.extend({show: options.clear}, $.fn.dropselect.defaults.clear);
+				if (typeof options.filter == 'boolean') options.filter = $.extend($.fn.dropselect.defaults.filter, {show: options.filter});
+				if (typeof options.clear == 'boolean') options.clear = $.extend($.fn.dropselect.defaults.clear, {show: options.clear});
 			}
 
 			this.$_items = $el.children('li:has(a)');
