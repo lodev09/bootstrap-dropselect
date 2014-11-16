@@ -2,6 +2,8 @@ bootstrap-dropselect
 ============================
 A simple jQuery plugin that extends bootstrap's dropdown menu into something like github's [select menu](https://github.com/styleguide/css/13.0).
 
+![demo](demo.jpg "demo")
+
 ## Setup
 Setup `dropselect` in 2 steps
 
