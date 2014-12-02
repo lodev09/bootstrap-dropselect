@@ -1,5 +1,5 @@
 /* ===================================================
- * bootstrap-dropselect.js v1.1.0
+ * bootstrap-dropselect.js v1.1.2
  * http://github.com/lodev09/bootstrap-dropselect
  * ===================================================
  * Copyright 2014 Jovanni Lo
@@ -90,7 +90,8 @@
 		load: function() {
 			var that = this,
 				$el = this.$element,
-				options = this.options;
+				options = this.options,
+				$itemsLi = $el.children('li:has(a), li.divider');
 
 			this._setListener();
 
@@ -99,8 +100,9 @@
 				if (typeof options.clear == 'boolean') options.clear = $.extend($.fn.dropselect.defaults.clear, {show: options.clear});
 			}
 
-			this.$_items = $el.children('li:has(a)');
-			this.$_items.wrapAll('<ul class="dropselect-list"></div>');
+			$itemsLi.wrapAll('<ul class="dropselect-list"></div>');
+
+			this.$_items = $itemsLi.has('a:first');
 
 			this.$_list = $el.find('.dropselect-list');
 			this.$_list.append('<li class="dropselect-no-results">' + options.filter.noresult + '</li>');
@@ -128,7 +130,10 @@
 					$element: $itemEl
 				});
 
-				if ($itemEl.hasClass('dropselect-selected')) {
+				if ($itemEl.hasClass('dropselect-selected') ||
+					typeof $itemEl.data('selected') != 'undefined' ||
+					typeof $itemEl.attr('selected') != 'undefined') {
+
 					// select it but don't trigger onselect event
 					that.select(index, false);
 				}
