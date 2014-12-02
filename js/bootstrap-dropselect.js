@@ -1,5 +1,5 @@
 /* ===================================================
- * bootstrap-dropselect.js v1.0.0
+ * bootstrap-dropselect.js v1.1.0
  * http://github.com/lodev09/bootstrap-dropselect
  * ===================================================
  * Copyright 2014 Jovanni Lo
@@ -34,6 +34,7 @@
 		this.selectedValue = '';
 		this.selectedValues = [];
 		this.$_items = undefined;
+		this.$_list = undefined;
 
 		this.load();
 	};
@@ -94,15 +95,18 @@
 			this._setListener();
 
 			if (typeof options != 'undefined') {
-				if (typeof options.filter == 'boolean') options.filter = $.extend({show: options.filter}, $.fn.dropselect.defaults.filter);
-				if (typeof options.clear == 'boolean') options.clear = $.extend({show: options.clear}, $.fn.dropselect.defaults.clear);
+				if (typeof options.filter == 'boolean') options.filter = $.extend($.fn.dropselect.defaults.filter, {show: options.filter});
+				if (typeof options.clear == 'boolean') options.clear = $.extend($.fn.dropselect.defaults.clear, {show: options.clear});
 			}
 
 			this.$_items = $el.children('li:has(a)');
+			this.$_items.wrapAll('<ul class="dropselect-list"></div>');
+
+			this.$_list = $el.find('.dropselect-list');
+			this.$_list.append('<li class="dropselect-no-results">' + options.filter.noresult + '</li>');
 
 			$el.addClass("dropselect");
 			$el.prepend('<li class="dropselect-loading-overlay"><i class="glyphicon glyphicon-time dropselect-loading-icon"></i></li>');
-
 			this.$_items.each(function(index, el) {
 				var $itemEl = $(this),
 					text = $.trim($itemEl.text()),
@@ -155,10 +159,13 @@
 				            return value.indexOf(q) == -1;
 				        }).addClass('hidden');
 				    }
+
+				    if (that.$_items.not('.hidden').length <= 0) that.$_list.addClass('filter-empty');
+					else that.$_list.removeClass('filter-empty');
 				});
 
 				// insert at the top of the item list
-				$el.find('li:has(a):first').before($fitler);
+				this.$_list.before($fitler);
 			}
 
 			// configure clear button
@@ -175,7 +182,7 @@
 					that.clear();
 				});
 
-				$el.find('li:has(a):first').before($clear);
+				this.$_list.before($clear);
 			}
 
 			this.$element.trigger($.extend({type: 'ds.load'}, this));
@@ -274,8 +281,9 @@
 
 	$.fn.dropselect = function(options, eventArgs) {
 		return this.each(function() {
-			var $this = $(this),
-				data = $this.data('dropselect');
+			var $this = $(this);
+
+			var	data = $this.data('dropselect');
 
 			if (typeof options == 'string') {
 				// run a method if given a string
@@ -309,7 +317,8 @@
 		filter: {
 			show: true,
 			placeholder: 'Search',
-			casesensitive: false
+			casesensitive: false,
+			noresult: 'No results found'
 		}
 	};
 
