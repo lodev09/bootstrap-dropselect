@@ -1,9 +1,12 @@
 /**
- * Bootstrap-Markdown.less
+ * bootstrap-dropselect.less
  *
  * @author Jovanni Lo @lodev09
  * @copyright 2014 Jovanni Lo
  */
+
+// variables.less from bootstrap
+@import "variables.less";
 
 @dropselect-icon-width: 			23px;
 @dropselect-item-padding:			8px;
@@ -12,23 +15,10 @@
 .dropselect {
 	width: 300px;
 	padding: 0;
+	border-collapse: separate;
 
-	.dropselect-loading-overlay .dropselect-loading-icon {
-	    position:absolute;
-	    left:50%;
-	    top:50%;
-	    margin:-16px 0 0 -16px;
-	    width:32px;
-	    font-size: 32px;
-	    line-height:1;
-	    display:inline-block;
-	    text-decoration:none;
-	    -webkit-font-smoothing:antialiased;
-	    text-indent:0
-	}
-
-	.dropselect-loading-overlay {
-	    display:none;
+	&-loading-overlay {
+		display:none;
 	    text-indent:100%;
 	    height:100%;
 	    width:100%;
@@ -40,7 +30,21 @@
 	    background-color:rgba(255,255,255,0.8);
 	    animation:dropselect-pulse 2s infinite linear;
 	    -webkit-animation:dropselect-pulse 2s infinite linear;
-	    -moz-animation:dropselect-pulse 2s infinite linear
+	    -moz-animation:dropselect-pulse 2s infinite linear;
+
+		.dropselect-loading-icon {
+			position:absolute;
+		    left:50%;
+		    top:50%;
+		    margin:-16px 0 0 -16px;
+		    width:32px;
+		    font-size: 32px;
+		    line-height:1;
+		    display:inline-block;
+		    text-decoration:none;
+		    -webkit-font-smoothing:antialiased;
+		    text-indent:0;
+		}
 	}
 
 	> .dropdown-header {
@@ -52,10 +56,37 @@
 		border-bottom: 1px solid rgba(200,200,200,0.4)
 	}
 
-	> li {
-		border-bottom: 1px solid @gray-lighter;
+	> .dropselect-list {
+		height: auto;
+	    max-height: 400px;
+	    overflow-x: hidden;
+		min-width: 160px;
+		padding: 0;
+		margin: 0;
+		list-style: none;
+		font-size: @font-size-base;
+		text-align: left;
 
-		&:last-child { border-bottom: 0; }
+		> .dropselect-item .dropselect-item-icon { visibility: hidden; }
+		> .dropselect-item.dropselect-selected .dropselect-item-icon { visibility: visible; }
+
+		> li:nth-last-child(2) { border-bottom: 0; }
+
+		> .dropselect-no-results {
+			padding: 10px;
+			color: @gray-light;
+			display: none;
+			border-bottom: 0;
+		}
+
+		&.filter-empty .dropselect-no-results,
+		> .dropselect-no-results:only-child {
+			display: block;
+		}
+	}
+
+	> li, > .dropselect-list > li {
+		border-bottom: 1px solid @gray-lighter;
 
 		> a {
 			padding: @dropselect-item-padding;
@@ -64,22 +95,37 @@
 			width: 100%;
 			overflow: hidden;
 
-			&:hover * { color: inherit !important; }
+			// from bootstrap
+			clear: both;
+		    font-weight: normal;
+		    line-height: @line-height-base;
+		    color: @dropdown-link-color;
+		    white-space: nowrap; // prevent links from randomly breaking onto new lines
+
+			&:hover,
+			&:focus {
+				text-decoration: none;
+				color: @dropdown-link-hover-color;
+				background-color: @dropdown-link-hover-bg;
+
+				& .dropselect-item-icon {
+					color: @dropdown-link-hover-color
+				}
+			}
 		}
 	}
 
-	> .divider {
+	.divider {
 		height: 5px;
 		margin: 0;
 		background-color: @navbar-default-bg;
 	}
 
-	.dropselect-item-icon {
+	&-item-icon {
 		width: @dropselect-icon-width;
 		display: table-cell;
+		color: @gray-dark;
 	}
-
-	> .dropselect-item .dropselect-item-icon { visibility: hidden; }
 
 	> .dropselect-filter {
 		background-color: @navbar-default-bg;
@@ -92,8 +138,6 @@
 		width: 100%;
 		max-width: 100%;
 	}
-
-	.dropselect-item.dropselect-selected .dropselect-item-icon { visibility: visible; }
 }
 
 .dropselect.dropselect-loading .dropselect-loading-overlay { display:block }
