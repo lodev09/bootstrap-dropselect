@@ -34,7 +34,7 @@
 		this.selectedValue = '';
 		this.selectedValues = [];
 		this.$_items = undefined;
-		this.$_list = undefined;
+		this.$_listContainer = undefined;
 
 		this.load();
 	};
@@ -91,7 +91,7 @@
 			var that = this,
 				$el = this.$element,
 				options = this.options,
-				$itemsLi = $el.children('li:has(a), li.divider');
+				$lis = $el.children('li:has(a), li.divider');
 
 			this._setListener();
 
@@ -100,15 +100,26 @@
 				if (typeof options.clear == 'boolean') options.clear = $.extend($.fn.dropselect.defaults.clear, {show: options.clear});
 			}
 
-			$itemsLi.wrapAll('<ul class="dropselect-list"></div>');
+			// get the items
+			this.$_items = $lis.has('a:first');
+			this.$_listContainer = $('<ul class="dropselect-list"></div>');
 
-			this.$_items = $itemsLi.has('a:first');
+			// put all <li> to the list container
+			$lis.appendTo(this.$_listContainer);
 
-			this.$_list = $el.find('.dropselect-list');
-			this.$_list.append('<li class="dropselect-no-results">' + options.filter.noresult + '</li>');
+			// put the no-results label as the last child
+			this.$_listContainer.append('<li class="dropselect-no-results">' + options.filter.noresult + '</li>');
 
+			// finally append the list container to the dropdown element
+			$el.append(this.$_listContainer);
+
+			// configure dropdown as dropselect
 			$el.addClass("dropselect");
+
+			// configure loading overlay
 			$el.prepend('<li class="dropselect-loading-overlay"><i class="glyphicon glyphicon-time dropselect-loading-icon"></i></li>');
+
+			// initiliaze each dropselect items
 			this.$_items.each(function(index, el) {
 				var $itemEl = $(this),
 					text = $.trim($itemEl.text()),
@@ -165,12 +176,12 @@
 				        }).addClass('hidden');
 				    }
 
-				    if (that.$_items.not('.hidden').length <= 0) that.$_list.addClass('filter-empty');
-					else that.$_list.removeClass('filter-empty');
+				    if (that.$_items.not('.hidden').length <= 0) that.$_listContainer.addClass('filter-empty');
+					else that.$_listContainer.removeClass('filter-empty');
 				});
 
 				// insert at the top of the item list
-				this.$_list.before($fitler);
+				this.$_listContainer.before($fitler);
 			}
 
 			// configure clear button
@@ -187,7 +198,7 @@
 					that.clear();
 				});
 
-				this.$_list.before($clear);
+				this.$_listContainer.before($clear);
 			}
 
 			this.$element.trigger($.extend({type: 'ds.load'}, this));
