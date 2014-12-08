@@ -125,6 +125,7 @@
   display: block;
   width: 100%;
   max-width: 100%;
+  float: none;
 }
 .dropselect.dropselect-loading .dropselect-loading-overlay {
   display: block;
