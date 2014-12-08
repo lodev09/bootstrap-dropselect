@@ -17,6 +17,14 @@
 	padding: 0;
 	border-collapse: separate;
 
+	&.dropselect-modal {
+		width: 220px;
+
+		> .dropselect-list > .dropselect-item .dropselect-item-icon {
+			display: none;
+		}
+	}
+
 	&-loading-overlay {
 		display:none;
 	    text-indent:100%;
@@ -100,7 +108,7 @@
 		    font-weight: normal;
 		    line-height: @line-height-base;
 		    color: @dropdown-link-color;
-		    white-space: nowrap; // prevent links from randomly breaking onto new lines
+		    white-space: normal; // make sure that we wrap the content of each item
 
 			&:hover,
 			&:focus {

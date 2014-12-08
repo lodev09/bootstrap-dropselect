@@ -9,6 +9,12 @@
   padding: 0;
   border-collapse: separate;
 }
+.dropselect.dropselect-modal {
+  width: 220px;
+}
+.dropselect.dropselect-modal > .dropselect-list > .dropselect-item .dropselect-item-icon {
+  display: none;
+}
 .dropselect-loading-overlay {
   display: none;
   text-indent: 100%;
@@ -90,7 +96,7 @@
   font-weight: normal;
   line-height: 1.42857143;
   color: #333333;
-  white-space: nowrap;
+  white-space: normal;
 }
 .dropselect > li > a:hover,
 .dropselect > .dropselect-list > li > a:hover,
