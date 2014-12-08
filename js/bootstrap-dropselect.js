@@ -129,9 +129,11 @@
 				$itemEl.find('a:first').prepend(' <i class="glyphicon glyphicon-ok dropselect-item-icon"></i> ')
 					// bind the click event of the item (anchor)
 					.on('click', function(e) {
-						if ($(this).attr('href') == '#') e.preventDefault();
-						if (!options.autohide) e.stopPropagation();
-						that.toggle(index);
+						if ($(this).attr('href') == '#') {
+							e.preventDefault();
+							if (!options.autohide) e.stopPropagation();
+							that.toggle(index);
+						}
 					});
 
 				// push new item to items list
