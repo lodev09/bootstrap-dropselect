@@ -114,7 +114,7 @@
 			$el.append(this.$_listContainer);
 
 			// configure dropdown as dropselect
-			$el.addClass("dropselect");
+			$el.addClass("dropselect").width(options.width);
 
 			// configure loading overlay
 			$el.prepend('<li class="dropselect-loading-overlay"><i class="glyphicon glyphicon-time dropselect-loading-icon"></i></li>');
@@ -126,15 +126,16 @@
 					value = typeof $itemEl.data('value') != 'undefined' ? $itemEl.data('value') : text;
 
 				$itemEl.addClass('dropselect-item');
-				$itemEl.find('a:first').prepend(' <i class="glyphicon glyphicon-ok dropselect-item-icon"></i> ')
-					// bind the click event of the item (anchor)
-					.on('click', function(e) {
-						if ($(this).attr('href') == '#') {
-							e.preventDefault();
-							if (!options.autohide) e.stopPropagation();
-							that.toggle(index);
-						}
-					});
+				if (options.icons) $itemEl.find('a:first').prepend(' <i class="glyphicon glyphicon-ok dropselect-item-icon"></i> ');
+
+				// bind the click event of the item (anchor)
+				$itemEl.on('click', function(e) {
+					if ($(this).attr('href') == '#') {
+						e.preventDefault();
+						if (!options.autohide) e.stopPropagation();
+						that.toggle(index);
+					}
+				});
 
 				// push new item to items list
 				that.items.push({
@@ -328,6 +329,8 @@
 		multiselect: false,
 		toggle: true,
 		autohide: false,
+		icons: true,
+		width: 300,
 		clear: {
 			show: true,
 			text: 'Clear selected'
