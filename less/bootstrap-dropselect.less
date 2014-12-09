@@ -16,6 +16,8 @@
 	width: 300px;
 	padding: 0;
 	border-collapse: separate;
+	margin-top: 4px;
+	margin-bottom: 20px;
 
 	&-loading-overlay {
 		display:none;
@@ -100,7 +102,7 @@
 		    font-weight: normal;
 		    line-height: @line-height-base;
 		    color: @dropdown-link-color;
-		    white-space: nowrap; // prevent links from randomly breaking onto new lines
+		    white-space: normal; // make sure that we wrap the content of each item
 
 			&:hover,
 			&:focus {

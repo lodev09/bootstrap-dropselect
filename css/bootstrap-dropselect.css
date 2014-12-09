@@ -8,6 +8,8 @@
   width: 300px;
   padding: 0;
   border-collapse: separate;
+  margin-top: 4px;
+  margin-bottom: 20px;
 }
 .dropselect-loading-overlay {
   display: none;
@@ -90,7 +92,7 @@
   font-weight: normal;
   line-height: 1.42857143;
   color: #333333;
-  white-space: nowrap;
+  white-space: normal;
 }
 .dropselect > li > a:hover,
 .dropselect > .dropselect-list > li > a:hover,
