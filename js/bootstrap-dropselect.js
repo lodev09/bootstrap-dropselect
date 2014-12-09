@@ -123,13 +123,14 @@
 			this.$_items.each(function(index, el) {
 				var $itemEl = $(this),
 					text = $.trim($itemEl.text()),
-					value = typeof $itemEl.data('value') != 'undefined' ? $itemEl.data('value') : text;
+					value = typeof $itemEl.data('value') != 'undefined' ? $itemEl.data('value') : text,
+					$itemAnchor = $itemEl.find('a:first');
 
 				$itemEl.addClass('dropselect-item');
-				if (options.icons) $itemEl.find('a:first').prepend(' <i class="glyphicon glyphicon-ok dropselect-item-icon"></i> ');
+				if (options.icons) $itemAnchor.prepend(' <i class="glyphicon glyphicon-ok dropselect-item-icon"></i> ');
 
 				// bind the click event of the item (anchor)
-				$itemEl.on('click', function(e) {
+				$itemAnchor.on('click', function(e) {
 					if ($(this).attr('href') == '#') {
 						e.preventDefault();
 						if (!options.autohide) e.stopPropagation();
