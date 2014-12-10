@@ -8,33 +8,35 @@
 // variables.less from bootstrap
 @import "variables.less";
 
-@dropselect-icon-width: 			23px;
-@dropselect-item-padding:			8px;
-@dropselect-header-padding: 		8px 10px;
+@ds-icon-width: 			23px;
+@ds-item-padding:			8px;
+@ds-header-padding: 		8px 10px;
+@ds-css-prefix:				dropselect;
 
-.dropselect {
+.@{ds-css-prefix} {
 	width: 300px;
 	padding: 0;
 	border-collapse: separate;
-	margin-top: 4px;
 	margin-bottom: 20px;
 
-	&-loading-overlay {
-		display:none;
-	    text-indent:100%;
-	    height:100%;
-	    width:100%;
-	    position:absolute;
-	    top:0;
-	    z-index:5;
-	    border-radius:5px;
-	    border:1px solid transparent;
-	    background-color:rgba(255,255,255,0.8);
-	    animation:dropselect-pulse 2s infinite linear;
-	    -webkit-animation:dropselect-pulse 2s infinite linear;
-	    -moz-animation:dropselect-pulse 2s infinite linear;
+	&-loading {
+		&-overlay {
+			display:none;
+		    text-indent:100%;
+		    height:100%;
+		    width:100%;
+		    position:absolute;
+		    top:0;
+		    z-index:5;
+		    border-radius:5px;
+		    border:1px solid transparent;
+		    background-color:rgba(255,255,255,0.8);
+		    animation:dropselect-pulse 2s infinite linear;
+		    -webkit-animation:dropselect-pulse 2s infinite linear;
+		    -moz-animation:dropselect-pulse 2s infinite linear;
+		}
 
-		.dropselect-loading-icon {
+		&-icon {
 			position:absolute;
 		    left:50%;
 		    top:50%;
@@ -49,16 +51,21 @@
 		}
 	}
 
+	&&-loading {
+		min-height: 200px;
+		.@{ds-css-prefix}-loading-overlay { display: block; }
+	}
+
 	> .dropdown-header {
 		background: @well-bg;
-		padding: @dropselect-header-padding;
+		padding: @ds-header-padding;
 		font-size: inherit;
 		color: @gray-dark;
 		text-shadow: 0 1px 0 #fff;
 		border-bottom: 1px solid rgba(200,200,200,0.4)
 	}
 
-	> .dropselect-list {
+	> .@{ds-css-prefix}-list {
 		height: auto;
 	    max-height: 400px;
 	    overflow-x: hidden;
@@ -69,29 +76,29 @@
 		font-size: @font-size-base;
 		text-align: left;
 
-		> .dropselect-item .dropselect-item-icon { visibility: hidden; }
-		> .dropselect-item.dropselect-selected .dropselect-item-icon { visibility: visible; }
+		> .@{ds-css-prefix}-item .@{ds-css-prefix}-item-icon { visibility: hidden; }
+		> .@{ds-css-prefix}-item.@{ds-css-prefix}-selected .@{ds-css-prefix}-item-icon { visibility: visible; }
 
 		> li:nth-last-child(2) { border-bottom: 0; }
 
-		> .dropselect-no-results {
+		> .@{ds-css-prefix}-no-results {
 			padding: 10px;
 			color: @gray-light;
 			display: none;
 			border-bottom: 0;
 		}
 
-		&.filter-empty .dropselect-no-results,
-		> .dropselect-no-results:only-child {
+		&.filter-empty .@{ds-css-prefix}-no-results,
+		> .@{ds-css-prefix}-no-results:only-child {
 			display: block;
 		}
 	}
 
-	> li, > .dropselect-list > li {
+	> li, > .@{ds-css-prefix}-list > li {
 		border-bottom: 1px solid @gray-lighter;
 
 		> a {
-			padding: @dropselect-item-padding;
+			padding: @ds-item-padding;
 			display: table;
 			table-layout: fixed;
 			width: 100%;
@@ -110,7 +117,7 @@
 				color: @dropdown-link-hover-color;
 				background-color: @dropdown-link-hover-bg;
 
-				& .dropselect-item-icon {
+				& .@{ds-css-prefix}-item-icon {
 					color: @dropdown-link-hover-color
 				}
 			}
@@ -124,18 +131,18 @@
 	}
 
 	&-item-icon {
-		width: @dropselect-icon-width;
+		width: @ds-icon-width;
 		display: table-cell;
 		color: @gray-dark;
 	}
 
-	> .dropselect-filter {
+	> .@{ds-css-prefix}-filter {
 		background-color: @navbar-default-bg;
 		padding: 10px;
 		border-bottom: 1px solid @table-border-color;
 	}
 
-	> .dropselect-filter .dropselect-filter-input {
+	> .@{ds-css-prefix}-filter &-filter-input {
 		display: block;
 		width: 100%;
 		max-width: 100%;
@@ -143,7 +150,6 @@
 	}
 }
 
-.dropselect.dropselect-loading .dropselect-loading-overlay { display:block }
 
 @-webkit-keyframes dropselect-pulse {
     0% {color:rgba(170,170,170,0.1)}

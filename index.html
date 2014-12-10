@@ -131,13 +131,14 @@ Upon initilizing `dropselect`, you can pass these available options
 | multiselect | boolean  | false                                                         | set to `true` if you want enable multi select menu.                                                      |
 | clear       | mixed    | `{ show: true, label: 'Clear selected' }`                     | option to enable the clear item. Pass a boolean `true` for minimal use.                                  |
 | filter      | mixed    | `{ show: true, placeholder: 'Search', casesensitive: false, noresult: 'No results found' }` | option to enable the filter textbox. Pass a boolean `true` for minimal use |
-| onclear     | callback | _empty_                                                       | callback function when `clear` event was triggered                                                       |
-| onselect    | callback | _empty_                                                       | callback function when `select` event was triggered                                                      |
-| onunselect  | callback | _empty_                                                       | callback function when `unselect` event was triggered                                                    |
-| ontoggle    | callback | _empty_                                                       | callback function when `toggle` event was triggered                                                      |
-| onchange    | callback | _empty_                                                       | callback function when `change` event was triggered                                                      |
+| onclear     | callback |                                                               | callback function when `clear` event was triggered                                                       |
+| onselect    | callback |                                                               | callback function when `select` event was triggered                                                      |
+| onunselect  | callback |                                                               | callback function when `unselect` event was triggered                                                    |
+| ontoggle    | callback |                                                               | callback function when `toggle` event was triggered                                                      |
+| onchange    | callback |                                                               | callback function when `change` event was triggered                                                      |
 | icons       | boolean  | true                                                          | show check icons                                                                                         |
 | width       | mixed    | 300                                                           | dropselect width                                                                                         |
+| items       | mixed    | "markup"                                                      | default items source. Get items from the `dropdown markup`, `array` or `function`                        |
 
 ### Events
 
@@ -229,7 +230,29 @@ $(function() {
     ```
       </div>
     </div>
+3. How do I load data from external source (not from the dropdown markup)?
+    _You use the `items` options to specify the source of dropselect items. The option accepts `array` or `function`
+    ```javascript
+      $(function() {
+        $('#my-dropselect').dropselect({
+          // you can directly pass an array of items
+          // items: ['Item 1', 'Item 2', { value: '1', text: 'Item w/ Value 1' }, 'Item 4'],
+          items: function(e) {
+            // return an array
+            // return ['Item 1', 'Item 2', { value: '1', text: 'Item w/ Value 1' }, 'Item 4'];
 
+            // dealing with ajax
+            $.get('/my_url/get', {}, function(data) {
+              // data.items should contain an array of items
+              e.load(data.items);
+            });
+            // return false so dropselect will not auto load in dealing with ajax
+            return false;
+          },
+          // ...
+        });
+      })
+    ```
 
     <!-- Bootstrap core JavaScript
     ================================================== -->
