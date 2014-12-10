@@ -36,7 +36,7 @@
 		this.$_items = undefined;
 		this.$_listContainer = undefined;
 
-		this.load();
+		this._init();
 	};
 
 	Dropselect.prototype = {
@@ -70,11 +70,33 @@
 			this.selectedValue = that.selectedValues[0];
 			this.selectedItem = that.selectedItems[0];
 
-			if (typeof triggerEvent == 'undefined' || triggerEvent === true) {
+			if (triggerEvent === true) {
 				this.$element.trigger($.extend({type: 'ds.change'}, this));
 			}
 
 			return this;
+		},
+
+		_init: function() {
+			var that = this,
+				$el = this.$element,
+				options = this.options,
+				items = options.items;
+
+			this._setListener();
+			this.showLoading();
+
+			// configure dropdown as dropselect
+			$el.addClass("dropselect").width(options.width);
+
+			// configure loading overlay
+			$el.prepend('<li class="dropselect-loading-overlay"><i class="glyphicon glyphicon-time dropselect-loading-icon"></i></li>');
+
+			if (typeof options.items == 'function') {
+				items = options.items(this);
+				// load if items is an array. If not, maybe let the user call .load(items) (for ajax calls)
+				if ($.isArray(items)) return this.load(items);
+			} else return this.load(items);
 		},
 
 		showLoading: function() {
@@ -87,20 +109,50 @@
 			return this;
 		},
 
-		load: function() {
+		load: function(items) {
 			var that = this,
 				$el = this.$element,
 				options = this.options,
-				$lis = $el.children('li:has(a), li.divider');
-
-			this._setListener();
+				itemElements = [],
+				$lis, $li, text, value, item, anchor, selected;
 
 			if (typeof options != 'undefined') {
 				if (typeof options.filter == 'boolean') options.filter = $.extend($.fn.dropselect.defaults.filter, {show: options.filter});
 				if (typeof options.clear == 'boolean') options.clear = $.extend($.fn.dropselect.defaults.clear, {show: options.clear});
 			}
 
-			// get the items
+			// load items
+			if ($.isArray(items)) {
+				for (var i in items) {
+					item = items[i];
+					selected = false;
+					anchor = '#';
+					if (typeof item == 'object') {
+						text = item.text || '';
+						value = item.value || $('<div/>').text(text).html();
+						selected = item.selected || false;
+						anchor = item.a || '#';
+					} else {
+						text = item;
+						value = $('<div/>').text(text).html();
+					}
+
+					$li = $('<li />');
+					if (text == '-') $li.addClass('divider').html(text);
+					else $li.attr('data-value', value).html(
+						$('<a />', typeof anchor == 'object' ? anchor : { href: anchor }
+					).html(text));
+
+					if (selected) $li.attr('data-selected', true);
+
+					itemElements.push($li.get(0));
+				}
+
+				$lis = $(itemElements);
+			} else {
+				$lis = $el.children('li:has(a), li.divider');
+			}
+
 			this.$_items = $lis.has('a:first');
 			this.$_listContainer = $('<ul class="dropselect-list"></div>');
 
@@ -112,12 +164,6 @@
 
 			// finally append the list container to the dropdown element
 			$el.append(this.$_listContainer);
-
-			// configure dropdown as dropselect
-			$el.addClass("dropselect").width(options.width);
-
-			// configure loading overlay
-			$el.prepend('<li class="dropselect-loading-overlay"><i class="glyphicon glyphicon-time dropselect-loading-icon"></i></li>');
 
 			// initiliaze each dropselect items
 			this.$_items.each(function(index, el) {
@@ -146,7 +192,7 @@
 				});
 
 				if ($itemEl.hasClass('dropselect-selected') ||
-					typeof $itemEl.data('selected') != 'undefined' ||
+					(typeof $itemEl.data('selected') != 'undefined' && $itemEl.data('selected')) ||
 					typeof $itemEl.attr('selected') != 'undefined') {
 
 					// select it but don't trigger onselect event
@@ -199,14 +245,14 @@
 				$clear.first('.dropselect-clear').on('click', function(e) {
 					e.preventDefault();
 					if (!options.autohide) e.stopPropagation();
-					that.clear();
+					that.clear(true);
 				});
 
 				this.$_listContainer.before($clear);
 			}
 
 			this.$element.trigger($.extend({type: 'ds.load'}, this));
-
+			this.hideLoading();
 			return this;
 		},
 
@@ -219,7 +265,7 @@
 		clear: function(triggerEvent) {
 			this.$_items.removeClass('dropselect-selected');
 			this._change(triggerEvent);
-			if (typeof triggerEvent == 'undefined' || triggerEvent === true) {
+			if (triggerEvent === true) {
 				this.$element.trigger($.extend({type: 'ds.clear'}, this));
 			}
 
@@ -237,7 +283,7 @@
 					if (!options.toggle) return this;
 					this.unselect(index);
 				} else {
-					this.select(index);
+					this.select(index, true);
 				}
 
 				$el.trigger($.extend({type: 'ds.toggle'}, this), item);
@@ -259,7 +305,7 @@
 					this.$_items.removeClass('dropselect-selected');
 				}
 
-				this._change();
+				this._change(true);
 				$el.trigger($.extend({type: 'ds.unselect'}, this), item);
 			}
 
@@ -271,7 +317,7 @@
 				$el = this.$element,
 				options = this.options;
 
-			if (typeof item == 'object') {
+			if (typeof item == 'object' && !$.isEmptyObject(item)) {
 				var $itemEl = item.$element;
 
 				if (!options.multiselect) {
@@ -281,7 +327,7 @@
 				$itemEl.addClass('dropselect-selected');
 				this._change(triggerEvent);
 
-				if (typeof triggerEvent == 'undefined' || triggerEvent === true) {
+				if (triggerEvent === true) {
 					$el.trigger($.extend({type: 'ds.select'}, this), item);
 				}
 			}
@@ -289,11 +335,11 @@
 			return this;
 		},
 
-		item: function(index) {
+		item: function(index, newValues) {
 			var item = this.items[index],
 				$el = this.$element;
 
-			return item;
+			return $.extend(true, item, newValues);
 		}
 	};
 
@@ -326,6 +372,9 @@
 		onchange: function(e) {},
 		onclear: function(e) {},
 		onload: function(e) {},
+
+		// item source
+		items: 'markup',
 
 		multiselect: false,
 		toggle: true,
