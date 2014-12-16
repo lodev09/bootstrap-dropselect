@@ -52,6 +52,18 @@
 			return this;
 		},
 
+		_unSetListener: function() {
+			this.$element
+				.off('ds.select')
+				.off('ds.unselect')
+				.off('ds.toggle')
+				.off('ds.change')
+				.off('ds.load')
+				.off('ds.clear');
+
+			return this;
+		},
+
 		_change: function(triggerEvent) {
 			var that = this;
 			this.selecteItem = {};
@@ -84,13 +96,13 @@
 				items = options.items;
 
 			this._setListener();
-			this.showLoading();
 
 			// configure dropdown as dropselect
 			$el.addClass("dropselect").width(options.width);
 
 			// configure loading overlay
 			$el.prepend('<li class="dropselect-loading-overlay"><i class="glyphicon glyphicon-time dropselect-loading-icon"></i></li>');
+			this.showLoading();
 
 			if (typeof options.items == 'function') {
 				items = options.items(this);
@@ -114,11 +126,15 @@
 				$el = this.$element,
 				options = this.options,
 				itemElements = [],
-				$lis, $li, text, value, item, anchor, selected;
+				$lis, $li, text, value, item, anchor, selected, icon;
 
 			if (typeof options != 'undefined') {
-				if (typeof options.filter == 'boolean') options.filter = $.extend($.fn.dropselect.defaults.filter, {show: options.filter});
-				if (typeof options.clear == 'boolean') options.clear = $.extend($.fn.dropselect.defaults.clear, {show: options.clear});
+				if (typeof options.filter == 'boolean')
+					options.filter = $.extend(true, {}, $.fn.dropselect.defaults.filter, {show: options.filter});
+				if (typeof options.clear == 'boolean')
+					options.clear = $.extend(true, {}, $.fn.dropselect.defaults.clear, {show: options.clear});
+				if (typeof options.icons == 'boolean')
+					options.icons = $.extend(true, {}, $.fn.dropselect.defaults.icons, {show: options.icons});
 			}
 
 			// load items
@@ -127,11 +143,14 @@
 					item = items[i];
 					selected = false;
 					anchor = '#';
+					icon = options.icons.selected;
+
 					if (typeof item == 'object') {
 						text = item.text || '';
 						value = item.value || $('<div/>').text(text).html();
-						selected = item.selected || false;
-						anchor = item.a || '#';
+						selected = item.selected || selected;
+						anchor = item.a || anchor;
+						icon = item.icon || icon;
 					} else {
 						text = item;
 						value = $('<div/>').text(text).html();
@@ -139,9 +158,10 @@
 
 					$li = $('<li />');
 					if (text == '-') $li.addClass('divider').html(text);
-					else $li.attr('data-value', value).html(
-						$('<a />', typeof anchor == 'object' ? anchor : { href: anchor }
-					).html(text));
+					else {
+						$li.attr('data-value', value).attr('data-icon', icon)
+							.html($('<a />', typeof anchor == 'object' ? anchor : { href: anchor }).html(text));
+					}
 
 					if (selected) $li.attr('data-selected', true);
 
@@ -170,10 +190,12 @@
 				var $itemEl = $(this),
 					text = $.trim($itemEl.text()),
 					value = typeof $itemEl.data('value') != 'undefined' ? $itemEl.data('value') : text,
-					$itemAnchor = $itemEl.find('a:first');
+					$itemAnchor = $itemEl.find('a:first'),
+					selectedIcon = $itemEl.data('icon') || options.icons.selected;
 
 				$itemEl.addClass('dropselect-item');
-				if (options.icons) $itemAnchor.prepend(' <i class="glyphicon glyphicon-ok dropselect-item-icon"></i> ');
+
+				if (options.icons.show) $itemAnchor.prepend(' <i class="' + selectedIcon + ' dropselect-item-icon"></i> ');
 
 				// bind the click event of the item (anchor)
 				$itemAnchor.on('click', function(e) {
@@ -188,6 +210,7 @@
 				that.items.push({
 					value: value,
 					text: text,
+					icon: selectedIcon,
 					$element: $itemEl
 				});
 
@@ -238,7 +261,7 @@
 			if (options.clear.show) {
 				var $clear = $('\
 					<li class="dropselect-clear">\
-						<a href="#"><i class="glyphicon glyphicon-remove dropselect-item-icon"></i> ' + options.clear.text + ' </a>\
+						<a href="#"><i class="' + options.icons.clear + ' dropselect-item-icon"></i> ' + options.clear.text + ' </a>\
 					</li>\
 					<li class="divider"></li>');
 
@@ -275,6 +298,7 @@
 		toggle: function(index) {
 			var item = this.item(index),
 				$el = this.$element,
+				selected = false,
 				options = this.options;
 
 			if (typeof item == 'object') {
@@ -284,9 +308,10 @@
 					this.unselect(index);
 				} else {
 					this.select(index, true);
+					selected = true;
 				}
 
-				$el.trigger($.extend({type: 'ds.toggle'}, this), item);
+				$el.trigger($.extend({type: 'ds.toggle'}, this), [item, selected]);
 			}
 
 			return this;
@@ -340,6 +365,24 @@
 				$el = this.$element;
 
 			return $.extend(true, item, newValues);
+		},
+
+		destroy: function() {
+			this._unSetListener();
+			this.$element.removeClass('dropselect');
+			this.$element.find('.dropselect-list li').unwrap();
+			this.$element.find('.dropselect-clear').next('.divider').remove();
+			this.$element.find('li.dropselect-item')
+				.removeClass('dropselect-item dropselect-selected')
+				.find('> a').off('click')
+				.find('.dropselect-item-icon').remove();
+
+			this.$element.find('[class^="dropselect"]').each(function() {
+				$(this).remove();
+			})
+
+			this.$element.removeData('dropselect');
+			this.$element = null;
 		}
 	};
 
@@ -379,7 +422,12 @@
 		multiselect: false,
 		toggle: true,
 		autohide: false,
-		icons: true,
+		icons: {
+			show: true,
+			selected: 'glyphicon glyphicon-ok',
+			clear: 'glyphicon glyphicon-remove',
+			dash: 'glyphicon glyphicon-minus'
+		},
 		width: 300,
 		clear: {
 			show: true,
