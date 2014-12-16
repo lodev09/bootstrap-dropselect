@@ -73,7 +73,7 @@
             <li class="divider"></li>
             <li><a href="#">Separated link</a></li>
             <li class="devider"></li>
-            <li><a href="#">Destroy me!</a></li>
+            <li data-value="destroy"><a href="#">Destroy me!</a></li>
 
           </ul>
         </div>
@@ -315,33 +315,38 @@ $(function() {
 		  	breaks: true
 		});
 
-    	$.fn.extend({
-    		marked: function() {
-				this.each(function() {
-					$this = $(this);
-					$this.html(marked($this.html()));
-				})
+  	$.fn.extend({
+  		marked: function() {
+			this.each(function() {
+				$this = $(this);
+				$this.html(marked($this.html()));
+			})
 
-				return this;
-			},
-    	});
+			return this;
+		},
+  	});
 
-    	$(function() {
+  	$(function() {
 
-    		$('.markdown').marked();
+  		$('.markdown').marked();
 
-    		$test = $('#dropselect').dropselect({
-          multiselect: true,
-    			onclear: function(e) {
-    				$('#dropselect-label').html('Click Me!');
-    			},
-          onselect: function(e, item) {
-            $('#dropselect-label').html(item.value);
-          },
-          filter: true
-    		});
+  		$test = $('#dropselect').dropselect({
+        onchange: function(e) {
+          if (typeof e.selectedItem != 'undefined') {
+            var item = e.selectedItem;
+            if (item.value == 'destroy') {
+              e.destroy();
+            } else {
+              $('#dropselect-label').html(item.value);
+            }
+          } else {
+            $('#dropselect-label').html('Click Me!');
+          }
+        },
+        filter: true
+  		});
 
-    	})
+  	})
     </script>
   </body>
 </html>
