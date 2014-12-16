@@ -72,6 +72,8 @@
             <li data-value="something_value"><a href="#">Something else here</a></li>
             <li class="divider"></li>
             <li><a href="#">Separated link</a></li>
+            <li class="devider"></li>
+            <li><a href="#">Destroy me!</a></li>
 
           </ul>
         </div>
@@ -142,13 +144,13 @@ Upon initilizing `dropselect`, you can pass these available options
 
 ### Events
 
-| Event    | Callback Params | Description                                |
-| ---      | ---             | ---                                        |
-| select   | `object` item   | triggered after you selected an item       |
-| unselect | `object` item   | triggered after you unselected an item     |
-| clear    | _none_          | triggered after you cleared selected items |
-| toggle   | `object` item   | triggered when item is toggled             |
-| change   | _none_          | triggered when item state was changed      |
+| Event    | Callback Params                     | Description                                |
+| ---      | ---                                 | ---                                        |
+| select   | `object` item                       | triggered after you selected an item       |
+| unselect | `object` item                       | triggered after you unselected an item     |
+| clear    |                                     | triggered after you cleared selected items |
+| toggle   | `object` item, `boolean` selected   | triggered when item is toggled             |
+| change   |                                     | triggered when item state was changed      |
 
 
 
@@ -160,20 +162,21 @@ Upon initilizing `dropselect`, you can pass these available options
 | selectedItems  | array  | current selected items (array of pushed item for every selected items in `multiselect` mode)   |
 | selectedValue  | string | current selected value                                                                         |
 | selectedValues | array  | current selected values (array of pushed value for every selected value in `multiselect` mode) |
-| items          | array  | list of items from your markup                                                                 |
+| items          | array  | list of items from your `markup` or `items` source                                             |
 
 ### Methods
 
-| Method          | Params                                 | Description                                         |
-| ---             | ---                                    | ---                                                 |
-| toggle(index)   | index - _zero based index of the item_ | toggles the selected state of an item               |
-| clear           | _none_                                 | clear all selected items                            |
-| select(index)   | index - _zero based index of the item_ | manually selects an item given by an index number   |
-| unselect(index) | index - _zero based index of the item_ | manually unselects an item given by an index number |
-| showLoading     | _none_                                 | shows the loading indicator                         |
-| hideLoading     | _none_                                 | hides the loading indicator                         |
-| hide            | _none_                                 | completely hides the dropdown                       |
-| item            | index - _zero based index of an item_  | get the item object by index                        |
+| Method          | Params                                 | Description                                                                                                                    |
+| ---             | ---                                    | ---                                                                                                                            |
+| toggle(index)   | index - _zero based index of the item_ | toggles the selected state of an item                                                                                          |
+| clear           |                                        | clear all selected items                                                                                                       |
+| select(index)   | index - _zero based index of the item_ | manually selects an item given by an index number                                                                              |
+| unselect(index) | index - _zero based index of the item_ | manually unselects an item given by an index number                                                                            |
+| showLoading     |                                        | shows the loading indicator                                                                                                    |
+| hideLoading     |                                        | hides the loading indicator                                                                                                    |
+| hide            |                                        | completely hides the dropdown                                                                                                  |
+| item            | index - _zero based index of an item_  | get the item `object` by index. Returns `{ item: ITEM_VALUE, text: ITEM_TEXT, icon: DEFAULT_ITEM_ICON, $element: LI_ELEMENT }` |
+| destroy         |                                        | destroys the plugin                                                                                                            |
 
 #### Sample Call
 ```javascript
@@ -229,19 +232,28 @@ $(function() {
       </ul>
     ```
 3. How do I load data from external source (not from the dropdown markup)?
-    _You use the `items` options to specify the source of dropselect items. The option accepts `array` or `function`
+    _You use the `items` options to specify the source of dropselect items. The option accepts `array` or `function`_
     ```javascript
       $(function() {
         $('#my-dropselect').dropselect({
           // you can directly pass an array of items
+          // each item is an object (or string) containing:
+          // {
+          //  text: 'display text',
+          //  value: 'XX',
+          //  a: '#' // an object containing the anchors attributes (href, class, etc.)
+          //  selected: false // true or false
+          // }
+          //
           // items: ['Item 1', 'Item 2', { value: '1', text: 'Item w/ Value 1' }, 'Item 4'],
+
+          // or you can pass a closure
           items: function(e) {
             // return an array
             // return ['Item 1', 'Item 2', { value: '1', text: 'Item w/ Value 1' }, 'Item 4'];
 
             // dealing with ajax
             $.get('/my_url/get', {}, function(data) {
-              // data.items should contain an array of items
               e.load(data.items);
             });
             // return false so dropselect will not auto load in dealing with ajax
@@ -249,6 +261,15 @@ $(function() {
           },
           // ...
         });
+      })
+    ```
+4. How do I remove or destroy dropselect from the dropdown?
+    _You use the 'destroy' mothod to remove any data, event handlers and elements related to the plugin_
+    ```javascript
+      $(function() {
+        // destroy!
+        if ($('#my-dropselect').data('dropselect') != 'undefined')
+          $('#my-dropselect').dropselect('destroy');
       })
     ```
       </div>
