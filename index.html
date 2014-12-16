@@ -268,7 +268,7 @@ $(function() {
     ```javascript
       $(function() {
         // destroy!
-        if ($('#my-dropselect').data('dropselect') != 'undefined')
+        if (typeof $('#my-dropselect').data('dropselect') != 'undefined')
           $('#my-dropselect').dropselect('destroy');
       })
     ```
