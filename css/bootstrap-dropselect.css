@@ -128,7 +128,7 @@
   padding: 10px;
   border-bottom: 1px solid #dddddd;
 }
- > .dropselect-filter .dropselect-filter-input {
+.dropselect > .dropselect-filter .dropselect-filter-input {
   display: block;
   width: 100%;
   max-width: 100%;
