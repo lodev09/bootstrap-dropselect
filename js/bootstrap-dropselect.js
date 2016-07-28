@@ -1,8 +1,8 @@
 /* ===================================================
- * bootstrap-dropselect.js v1.1.2
+ * bootstrap-dropselect.js v1.1.3
  * http://github.com/lodev09/bootstrap-dropselect
  * ===================================================
- * Copyright 2014 Jovanni Lo
+ * Copyright 2016 Jovanni Lo
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -27,12 +27,14 @@
 		var that = this;
 
 		this.$element = $(el);
+		this.$parent = this.$element.parent();
 		this.options = $.extend(true, {}, $.fn.dropselect.defaults, options, this.$element.data(), this.$element.data('options'));
 		this.items = [];
 		this.selecteItem = {};
 		this.selectedItems = [];
 		this.selectedValue = '';
 		this.selectedValues = [];
+		this.changed = false;
 		this.$_items = undefined;
 		this.$_listContainer = undefined;
 
@@ -47,7 +49,8 @@
 				.on('ds.toggle', $.proxy(this.options.ontoggle, this))
 				.on('ds.change', $.proxy(this.options.onchange, this))
 				.on('ds.load', $.proxy(this.options.onload, this))
-				.on('ds.clear', $.proxy(this.options.onclear, this));
+				.on('ds.clear', $.proxy(this.options.onclear, this))
+				.on('ds.hidden', $.proxy(this.options.onhidden, this));
 
 			return this;
 		},
@@ -59,7 +62,8 @@
 				.off('ds.toggle')
 				.off('ds.change')
 				.off('ds.load')
-				.off('ds.clear');
+				.off('ds.clear')
+				.off('ds.hidden');
 
 			return this;
 		},
@@ -83,6 +87,7 @@
 			this.selectedItem = that.selectedItems[0];
 
 			if (triggerEvent === true) {
+				this.changed = true;
 				this.$element.trigger($.extend({type: 'ds.change'}, this));
 			}
 
@@ -92,10 +97,16 @@
 		_init: function() {
 			var that = this,
 				$el = this.$element,
+				$parent = this.$parent,
 				options = this.options,
 				items = options.items;
 
 			this._setListener();
+
+			// set dropdown events
+			$parent.on('hidden.bs.dropdown', function(e) {
+				$el.trigger($.extend({type: 'ds.hidden'}, that));
+			});
 
 			// configure dropdown as dropselect
 			$el.addClass("dropselect").width(options.width);
@@ -415,6 +426,7 @@
 		onchange: function(e) {},
 		onclear: function(e) {},
 		onload: function(e) {},
+		onhidden: function(e) {},
 
 		// item source
 		items: 'markup',
