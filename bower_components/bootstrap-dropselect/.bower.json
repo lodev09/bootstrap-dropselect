@@ -21,21 +21,22 @@
     "node_modules",
     "bower_components",
     "test",
-    "tests"
+    "tests",
+    "demo.jpg"
   ],
   "dependencies": {
     "jquery": "^3.2.1",
     "bootstrap": "^3.3.7"
   },
-  "version": "1.1.2",
-  "_release": "1.1.2",
+  "version": "1.1.4",
+  "_release": "1.1.4",
   "_resolution": {
     "type": "version",
-    "tag": "v1.1.2",
-    "commit": "075077ac287c50e4594264d0af3d29fdb09a8628"
+    "tag": "v1.1.4",
+    "commit": "9876cfc32e6380a486f0a9094f69da3299826c6d"
   },
   "_source": "https://github.com/lodev09/bootstrap-dropselect.git",
-  "_target": "^1.1.2",
+  "_target": "^1.1.4",
   "_originalSource": "bootstrap-dropselect",
   "_direct": true
 }
