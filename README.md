@@ -1,11 +1,20 @@
 bootstrap-dropselect
 ============================
-A simple jQuery plugin that extends bootstrap's dropdown menu into something like github's [select menu](https://github.com/styleguide/css/13.0).
+A simple jQuery plugin that extends bootstrap's dropdown menu into a select menu
 
 ![demo](demo.jpg "demo")
 
-## Setup
-Setup `dropselect` in 2 steps
+## Install
+Several quick start options are available:
+
+- [download](https://github.com/lodev09/bootstrap-dropselect/archive/v1.0.1.zip) latest release
+- [npm](https://www.npmjs.com/package/bootstrap-dropselect): `npm install --save bootstrap-dropselect`
+- [bower](https://bower.io): `bower install bootstrap-dropselect`
+
+** Make sure to link `bootstrap-dropselect.js` and `bootstrap-dropselect.css` to your project
+
+## Usage
+Setup `dropselect` in **2 steps**
 
 ### Step 1
 Just code your standard bootstrap `dropdown`. http://getbootstrap.com/components/#dropdowns 
