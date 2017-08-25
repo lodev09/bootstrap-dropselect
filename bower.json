@@ -1,7 +1,10 @@
 {
   "name": "bootstrap-dropselect",
   "description": "A simple jQuery plugin that extends bootstrap's dropdown menu into a select menu",
-  "main": "bootstrap-dropselect.js",
+  "main": [
+    "bootstrap-dropselect.css",
+    "bootstrap-dropselect.js"
+  ],
   "authors": [
     "Jovanni Lo <lodev09@gmail.com>"
   ],
@@ -19,5 +22,9 @@
     "bower_components",
     "test",
     "tests"
-  ]
+  ],
+  "dependencies": {
+    "jquery": "^3.2.1",
+    "bootstrap": "^3.3.7"
+  }
 }

@@ -2,6 +2,8 @@
   "name": "bootstrap-dropselect",
   "version": "1.1.0",
   "description": "A simple jQuery plugin that extends bootstrap's dropdown menu into a select menu",
+  "style": "bootstrap-dropselect.css",
+  "less": "bootstrap-dropselect.less",
   "main": "bootstrap-dropselect.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
@@ -21,5 +23,9 @@
   "bugs": {
     "url": "https://github.com/lodev09/bootstrap-dropselect/issues"
   },
-  "homepage": "https://github.com/lodev09/bootstrap-dropselect#readme"
+  "homepage": "https://github.com/lodev09/bootstrap-dropselect#readme",
+  "dependencies": {
+    "bootstrap": "^3.3.7",
+    "jquery": "^3.2.1"
+  }
 }
