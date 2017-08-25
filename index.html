@@ -11,19 +11,19 @@
     <title>Bootstrap-dropselect by lodev09</title>
 
     <!-- Latest compiled and minified CSS -->
-	<link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
 
 	<!-- Custom styles for this template -->
     <link href="css/sticky-footer-navbar.css" rel="stylesheet">
 
 	<!-- Optional theme -->
-	<link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap-theme.min.css">
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap-theme.min.css">
 
 	<!-- highlight css -->
 	<link rel="stylesheet" href="css/highlight-github.css">
 
 	<!-- plugin css -->
-	<link rel="stylesheet" href="css/bootstrap-dropselect.css">
+	<link rel="stylesheet" href="bower_components/bootstrap-dropselect/bootstrap-dropselect.css">
 
 	<!-- Just for debugging purposes. Don't actually copy these 2 lines! -->
     <!--[if lt IE 9]><script src="../../assets/js/ie8-responsive-file-warning.js"></script><![endif]-->
@@ -53,7 +53,7 @@
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
           </button>
-          <a class="navbar-brand" href="#" class="dropdown-toggle" data-toggle="dropdown"><span id="dropselect-label">Click Me!</span> <span class="caret"></span></a>
+          <a class="navbar-brand" href="#" class="dropdown-toggle" data-toggle="dropdown"><span id="dropselect-label" class="text-primary">CLICK ME</span> <span class="caret"></span></a>
           <ul class="dropdown-menu" id="dropselect" role="menu">
           	<li class="dropdown-header">Nav header</li>
             <li><a href="#">Select Me!</a></li>
@@ -282,14 +282,14 @@ $(function() {
     <!-- Placed at the end of the document so the pages load faster -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
     <!-- Latest compiled and minified JavaScript -->
-	<script src="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
 
 	<!-- marked -->
 	<script src="js/marked.min.js"></script>
 	<script src="js/highlight.pack.js"></script>
 
 	<!-- plugin script -->
-	<script src="js/bootstrap-dropselect.js"></script>
+	<script src="bower_components/bootstrap-dropselect/bootstrap-dropselect.js"></script>
 
     <script>
 
@@ -341,7 +341,7 @@ $(function() {
               $('#dropselect-label').html(item.value);
             }
           } else {
-            $('#dropselect-label').html('Click Me!');
+            $('#dropselect-label').html('CLICK ME');
           }
         },
         filter: true

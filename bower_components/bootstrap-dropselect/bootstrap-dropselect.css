@@ -38,9 +38,6 @@
   -webkit-font-smoothing: antialiased;
   text-indent: 0;
 }
-.dropselect.dropselect-loading {
-  min-height: 200px;
-}
 .dropselect.dropselect-loading .dropselect-loading-overlay {
   display: block;
 }
